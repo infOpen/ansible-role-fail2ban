@@ -1,0 +1,8 @@
+---
+
+# Tests for ntp role
+
+- hosts: localhost
+  remote_user: root
+  roles:
+    - ansible-role-fail2ban

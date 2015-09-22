@@ -1,0 +1,9 @@
+---
+
+# Handlers file for fail2ban
+
+- name: restart fail2ban
+  service:
+    name  : "{{ fail2ban_service_name }}"
+    state : restarted
+  when : fail2ban_service_state != "stopped"

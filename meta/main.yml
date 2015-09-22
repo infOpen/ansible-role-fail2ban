@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  author: Alexandre Chaussier
+  description: install fail2ban package
+  company: Infopen (http://www.infopen.pro)
+  license: MIT
+  min_ansible_version: 1.5
+  platforms:
+    - name: Ubuntu
+      versions:
+        - precise
+        - quantal
+        - saucy
+        - trusty
+        - utopic
+        - vivid
+    - name: Debian
+      versions:
+        - jessie
+        - wheezy
+
+  categories:
+    - system
+    - networking
+dependencies: []

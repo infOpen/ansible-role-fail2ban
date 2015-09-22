@@ -1,0 +1,11 @@
+---
+
+- name : install fail2ban packages
+  apt  :
+    name  : "{{ item }}"
+    state : "{{ fail2ban_package_state }}"
+    update_cache     : True
+    cache_valid_time : 3600
+  with_items : "{{ fail2ban_packages }}"
+  notify :
+    - restart fail2ban
