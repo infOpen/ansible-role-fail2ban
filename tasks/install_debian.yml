@@ -1,6 +1,7 @@
 ---
 
 - name : install fail2ban packages
+  become: True
   apt  :
     name  : "{{ item }}"
     state : "{{ fail2ban_package_state }}"

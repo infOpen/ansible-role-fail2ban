@@ -12,6 +12,7 @@
   when: ansible_os_family == "Debian"
 
 - name : update configuration file - /etc/fail2ban/fail2ban.conf
+  become: True
   template :
     src   : "{{ role_path }}/templates/fail2ban.conf.j2"
     dest  : /etc/fail2ban/fail2ban.conf
@@ -22,6 +23,7 @@
 
 
 - name : update configuration file - /etc/fail2ban/jail.local
+  become: True
   template :
     src   : "{{ role_path }}/templates/jail.local.j2"
     dest  : /etc/fail2ban/jail.local
@@ -32,7 +34,9 @@
 
 
 - name : start and enable service
+  become: True
   service :
     name    : "{{ fail2ban_service_name }}"
     state   : "{{ fail2ban_service_state }}"
     enabled : "{{ fail2ban_service_enabled }}"
+
