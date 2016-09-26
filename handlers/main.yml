@@ -3,6 +3,7 @@
 # Handlers file for fail2ban
 
 - name: 'Restart fail2ban'
+  become: True
   service:
     name  : "{{ fail2ban_service_name }}"
     state : 'restarted'
