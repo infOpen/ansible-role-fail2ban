@@ -2,7 +2,7 @@
 
 # Tests for fail2ban role
 
-- hosts: localhost
-  remote_user: root
+- hosts: 'localhost'
+  remote_user: 'root'
   roles:
-    - ansible-role-fail2ban
+    - 'ansible-role-fail2ban'
