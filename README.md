@@ -94,10 +94,10 @@ None
 
 ## Example Playbook
 
-```
-- hosts: servers
+```yaml
+- hosts: 'servers'
   roles:
-     - { role: achaussier.fail2ban }
+    - role: 'infOpen.fail2ban'
 ```
 
 ## License
