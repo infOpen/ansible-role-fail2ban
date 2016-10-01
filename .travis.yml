@@ -2,34 +2,36 @@
 
 # Travis file for fail2ban role
 
-language: python
-python: "2.7"
+dist: trusty
+sudo: required
+
+services:
+  - docker
+
+language: 'python'
+
+python:
+  - '2.7'
+
+env:
+  global:
+    - ANSIBLE_ROLES_PATH="${TRAVIS_BUILD_DIR%/*/*}"
+
+  matrix:
+    - TOXENV='py27-ansible20'
+    - TOXENV='py27-ansible21'
 
 before_install:
-  # Make sure everything's up to date.
-  - sudo apt-get update -qq
+  # Create SSH keys
+  -  cat /dev/zero | ssh-keygen -q -N ""
 
 install:
-  # Install Ansible.
-  - pip install ansible
-
-  # Add ansible.cfg to pick up roles path.
-  - "cp ./tests/ansible.cfg ./"
+  # Install tox dependency
+  - 'pip install tox'
 
 script:
-  # Check the role/playbook's syntax.
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  # Run tests
+  - 'make test-env'
 
-  # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo"
-
-  # Run the role/playbook again, checking to make sure it's idempotent.
-  # Set change=1 due to a bug in ansible service module always return changed
-  - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
-    | grep -q 'changed=[01].*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
-
-  # Check fail2ban service is running
-  - sudo service fail2ban status
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
