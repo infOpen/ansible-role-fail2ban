@@ -1,25 +1,25 @@
 ---
 galaxy_info:
-  author: Alexandre Chaussier
-  description: install fail2ban package
-  company: Infopen (http://www.infopen.pro)
-  license: MIT
-  min_ansible_version: 1.8
+  author: 'Alexandre Chaussier'
+  description: 'Install fail2ban package'
+  company: 'Infopen (http://www.infopen.pro)'
+  license: 'MIT'
+  min_ansible_version: '1.8'
+  github_branch: 'master'
   platforms:
-    - name: Ubuntu
+    - name: 'Ubuntu'
       versions:
-        - precise
-        - quantal
-        - saucy
-        - trusty
-        - utopic
-        - vivid
-    - name: Debian
+        - 'precise'
+        - 'quantal'
+        - 'saucy'
+        - 'trusty'
+        - 'utopic'
+        - 'vivid'
+    - name: 'Debian'
       versions:
-        - jessie
-        - wheezy
-
-  categories:
-    - system
-    - networking
+        - 'jessie'
+        - 'wheezy'
+  galaxy_tags:
+    - 'system'
+    - 'networking'
 dependencies: []
