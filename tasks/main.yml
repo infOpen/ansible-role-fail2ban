@@ -4,13 +4,16 @@
 
 - name: 'Load the OS specific varibles'
   include_vars: "{{ role_path }}/vars/{{ ansible_os_family | lower }}.yml"
+  tags:
+    - 'fail2ban::role'
+    - 'fail2ban::install'
 
 
 - include: 'install_debian.yml'
-  tags:
-    - 'install'
-    - 'fail2ban'
   when: "{{ ansible_os_family == 'Debian' }}"
+  tags:
+    - 'fail2ban::role'
+    - 'fail2ban::install'
 
 
 - name: 'Update configuration file - /etc/fail2ban/fail2ban.conf'
@@ -22,6 +25,9 @@
     group: 'root'
     mode: '0644'
   notify: 'Restart fail2ban'
+  tags:
+    - 'fail2ban::role'
+    - 'fail2ban::config'
 
 
 - name: 'Update configuration file - /etc/fail2ban/jail.local'
@@ -33,6 +39,9 @@
     group: 'root'
     mode: '0644'
   notify: 'Restart fail2ban'
+  tags:
+    - 'fail2ban::role'
+    - 'fail2ban::config'
 
 
 - name: 'Start and enable service'
@@ -41,3 +50,6 @@
     name: "{{ fail2ban_service_name }}"
     state: "{{ fail2ban_service_state }}"
     enabled: "{{ fail2ban_service_enabled }}"
+  tags:
+    - 'fail2ban::role'
+    - 'fail2ban::install'
