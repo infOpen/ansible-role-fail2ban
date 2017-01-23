@@ -1,0 +1,26 @@
+---
+
+# Configuration tasks file for fail2ban
+#==============================================================================
+
+- name: 'CONFIG | Manage main configuration file'
+  ini_file:
+    dest: "{{ fail2ban_main_config_file_path }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+    section: "{{ item.section | default('Definition') }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  notify: 'Restart fail2ban'
+  with_items: "{{ fail2ban_main_config_content }}"
+
+
+- name: 'CONFIG | Manage local jails configuration file'
+  template:
+    src: "{{ role_path }}/templates/jail.local.j2"
+    dest: "{{ fail2ban_local_jails_config_file_path }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: 'Restart fail2ban'
