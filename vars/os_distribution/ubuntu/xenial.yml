@@ -1,0 +1,34 @@
+---
+
+# Specific Xenial vars
+#==============================================================================
+
+# Main configuration
+#------------------------------------------------------------------------------
+_fail2ban_main_config_content:
+  - option: 'loglevel'
+    value: 'INFO'
+  - option: 'logtarget'
+    value: '/var/log/fail2ban.log'
+  - option: 'syslogsocket'
+    value: 'auto'
+  - option: 'socket'
+    value: '/var/run/fail2ban/fail2ban.sock'
+  - option: 'pidfile'
+    value: '/var/run/fail2ban/fail2ban.pid'
+  - option: 'dbfile'
+    value: '/var/lib/fail2ban/fail2ban.sqlite3'
+  - option: 'dbpurgeage'
+    value: 86400
+
+
+# Jails configuration
+#------------------------------------------------------------------------------
+_fail2ban_services:
+  - name: 'sshd'
+    enabled: true
+    port: 'ssh'
+    filter: 'sshd'
+    logpath: '/var/log/auth.log'
+    maxretry: 3
+    findtime: 600

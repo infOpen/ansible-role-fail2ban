@@ -8,3 +8,8 @@
     name  : "{{ fail2ban_service_name }}"
     state : 'restarted'
   when : "{{ fail2ban_service_state != 'stopped' }}"
+  tags:
+    - 'role::fail2ban'
+    - 'role::fail2ban::config'
+    - 'role::fail2ban::install'
+    - 'role::fail2ban::service'
