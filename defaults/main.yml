@@ -1,27 +1,34 @@
 ---
 
 # Defaults file for fail2ban
+#==============================================================================
 
 # Package variables
-#------------------
+#------------------------------------------------------------------------------
 fail2ban_package_state: 'present'
+fail2ban_packages: "{{ _fail2ban_packages }}"
 
 
 # Service variables
-#------------------
-fail2ban_service_state: 'started'
+#------------------------------------------------------------------------------
 fail2ban_service_enabled: True
+fail2ban_service_name: "{{ _fail2ban_service_name }}"
+fail2ban_service_state: 'started'
 
-fail2ban_loglevel: 3
-fail2ban_logtarget: '/var/log/fail2ban.log'
-fail2ban_syslog_target: '/var/log/fail2ban.log'
-fail2ban_syslog_facility: 1
-fail2ban_socket: '/var/run/fail2ban/fail2ban.sock'
-fail2ban_pidfile: '/var/run/fail2ban/fail2ban.pid'
 
+# Main configuration
+#------------------------------------------------------------------------------
+fail2ban_main_config_content: "{{ _fail2ban_main_config_content }}"
+fail2ban_main_config_file_path: '/etc/fail2ban/fail2ban.conf'
+
+
+# Jails configuration
+#------------------------------------------------------------------------------
+fail2ban_local_jails_config_file_path: '/etc/fail2ban/jail.local'
+
+# Default configuration
 fail2ban_ignoreips:
  - '127.0.0.1/8'
-
 fail2ban_bantime: 600
 fail2ban_maxretry: 3
 fail2ban_findtime: 600
@@ -33,11 +40,5 @@ fail2ban_protocol: 'tcp'
 fail2ban_chain: 'INPUT'
 fail2ban_action: 'action_'
 
-fail2ban_services:
-  - name: 'ssh'
-    enabled: true
-    port: 'ssh'
-    filter: 'sshd'
-    logpath: '/var/log/auth.log'
-    maxretry: 3
-    findtime: 600
+# Jails services
+fail2ban_services: "{{ _fail2ban_services }}"

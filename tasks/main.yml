@@ -1,55 +1,37 @@
 ---
 
-# Tasks file for fail2ban
+# Main tasks file for fail2ban
+#==============================================================================
 
-- name: 'Load the OS specific varibles'
-  include_vars: "{{ role_path }}/vars/{{ ansible_os_family | lower }}.yml"
+- name: 'INIT | Manage variables to use for our target'
+  include: "{{ role_path }}/tasks/manage_variables.yml"
   tags:
-    - 'fail2ban::role'
-    - 'fail2ban::install'
+    - 'role::fail2ban'
+    - 'role::fail2ban::config'
+    - 'role::fail2ban::install'
 
 
-- include: 'install_debian.yml'
-  when: "{{ ansible_os_family == 'Debian' }}"
-  tags:
-    - 'fail2ban::role'
-    - 'fail2ban::install'
-
-
-- name: 'Update configuration file - /etc/fail2ban/fail2ban.conf'
+- name: 'INSTALL | Manage install on Debian family OS'
   become: True
-  template:
-    src: "{{ role_path }}/templates/fail2ban.conf.j2"
-    dest: '/etc/fail2ban/fail2ban.conf'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
-  notify: 'Restart fail2ban'
+  include: "{{ role_path }}/tasks/install_debian.yml"
+  when: "{{ (ansible_os_family | lower) == 'debian' }}"
   tags:
-    - 'fail2ban::role'
-    - 'fail2ban::config'
+    - 'role::fail2ban'
+    - 'role::fail2ban::install'
 
 
-- name: 'Update configuration file - /etc/fail2ban/jail.local'
+- name: 'CONFIG | Include configuration tasks'
   become: True
-  template:
-    src: "{{ role_path }}/templates/jail.local.j2"
-    dest: '/etc/fail2ban/jail.local'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
-  notify: 'Restart fail2ban'
+  include: "{{ role_path }}/tasks/manage_config.yml"
   tags:
-    - 'fail2ban::role'
-    - 'fail2ban::config'
+    - 'role::fail2ban'
+    - 'role::fail2ban::config'
 
 
-- name: 'Start and enable service'
+- name: 'SERVICE | Include services tasks'
   become: True
-  service:
-    name: "{{ fail2ban_service_name }}"
-    state: "{{ fail2ban_service_state }}"
-    enabled: "{{ fail2ban_service_enabled }}"
+  include: "{{ role_path }}/tasks/manage_service.yml"
   tags:
-    - 'fail2ban::role'
-    - 'fail2ban::install'
+    - 'role::fail2ban'
+    - 'role::fail2ban::install'
+    - 'role::fail2ban::service'

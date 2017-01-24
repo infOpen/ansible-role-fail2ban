@@ -1,0 +1,10 @@
+---
+
+# Service tasks file for fail2ban
+#==============================================================================
+
+- name: 'SERVICE | Manage service state'
+  service:
+    name: "{{ fail2ban_service_name }}"
+    state: "{{ fail2ban_service_state }}"
+    enabled: "{{ fail2ban_service_enabled }}"

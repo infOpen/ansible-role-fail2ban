@@ -4,6 +4,13 @@
 
 - hosts: 'all'
   remote_user: "{{ lookup('env', 'VAGRANT') == 'true' | ternary('vagrant', 'root') }}"
+  pre_tasks:
+    # Useful for Docker testing to be sure log file exists
+    - file:
+        path: '/var/log/auth.log'
+        state: 'touch'
+      become: True
+      changed_when: False
   roles:
     - role: "{{ role_name }}"
   vars:

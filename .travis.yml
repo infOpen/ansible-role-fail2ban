@@ -20,10 +20,12 @@ env:
   matrix:
     - TOXENV='py27-ansible20'
     - TOXENV='py27-ansible21'
+    - TOXENV='py27-ansible22'
+    - TOXENV='py27-ansible-devel'
 
 before_install:
   # Create SSH keys
-  -  cat /dev/zero | ssh-keygen -q -N ""
+  - cat /dev/zero | ssh-keygen -q -N ""
 
 install:
   # Install tox dependency
