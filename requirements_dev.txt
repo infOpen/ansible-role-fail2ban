@@ -1,5 +1,5 @@
 ansible==2.3.0.0
-paramiko==2.0.2
+paramiko==2.1.2
 pytest==2.9.2
 testinfra==1.4.5
 tox>=2,<3
