@@ -17,6 +17,12 @@
 
 
 - hosts: 'all'
+  pre_tasks:
+    - file:
+        path: '/var/log/auth.log'
+        state: 'touch'
+      become: True
+      changed_when: False
   roles:
     - role: "{{ role_name }}"
   vars:
