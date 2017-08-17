@@ -12,8 +12,7 @@
 
 - name: 'INSTALL | Manage install on Debian family OS'
   become: True
-  include: "{{ role_path }}/tasks/install_debian.yml"
-  when: "{{ (ansible_os_family | lower) == 'debian' }}"
+  include: "{{ role_path }}/tasks/install_{{ ansible_os_family | lower }}.yml"
   tags:
     - 'role::fail2ban'
     - 'role::fail2ban::install'

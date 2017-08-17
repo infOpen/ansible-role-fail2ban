@@ -1,12 +1,11 @@
 ---
 
-- name: 'Install fail2ban packages'
-  become: True
+- name: 'INSTALL | APT | Install fail2ban packages'
   apt:
-    name: "{{ item }}"
-    state: "{{ fail2ban_package_state }}"
-    update_cache: True
-    cache_valid_time: 3600
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    update_cache: "{{ fail2ban_repository_update_cache }}"
+    cache_valid_time: "{{ fail2ban_repository_cache_valid_time }}"
   with_items: "{{ fail2ban_packages }}"
   notify:
-    - 'Restart fail2ban'
+    - 'HANDLER | Restart fail2ban'

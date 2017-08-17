@@ -18,10 +18,11 @@
 
 - hosts: 'all'
   pre_tasks:
-    - file:
+    - name: 'PREREQUISITES | FILES | Touch /var/log/auth.log'
+      become: True
+      file:
         path: '/var/log/auth.log'
         state: 'touch'
-      become: True
       changed_when: False
   roles:
     - role: "{{ role_name }}"

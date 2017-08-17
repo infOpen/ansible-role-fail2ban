@@ -2,6 +2,11 @@
 
 # Defaults vars file for fail2ban role
 
+# Repositories variables
+#------------------------------------------------------------------------------
+fail2ban_repository_update_cache: True
+fail2ban_repository_cache_valid_time: 3600
+
 # Package variables
 #------------------------------------------------------------------------------
 fail2ban_package_state: 'present'

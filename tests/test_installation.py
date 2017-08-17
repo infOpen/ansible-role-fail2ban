@@ -12,7 +12,6 @@ testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
 
 
 # Test packages
-#------------------------------------------------------------------------------
 def test_packages(host):
     """
     Test package install
@@ -22,7 +21,6 @@ def test_packages(host):
 
 
 # Test configuration
-#------------------------------------------------------------------------------
 @pytest.mark.parametrize('path', [
     '/etc/fail2ban/fail2ban.conf',
     '/etc/fail2ban/jail.conf',
