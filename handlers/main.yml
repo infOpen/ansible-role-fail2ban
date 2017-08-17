@@ -1,13 +1,13 @@
 ---
 
-# Handlers file for fail2ban
+# Handlers main file for fail2ban role
 
-- name: 'Restart fail2ban'
+- name: 'HANDLER | Restart fail2ban'
   become: True
   service:
     name  : "{{ fail2ban_service_name }}"
     state : 'restarted'
-  when : "{{ fail2ban_service_state != 'stopped' }}"
+  when : "fail2ban_service_state != 'stopped'"
   tags:
     - 'role::fail2ban'
     - 'role::fail2ban::config'

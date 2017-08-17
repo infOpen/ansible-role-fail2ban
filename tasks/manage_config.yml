@@ -12,7 +12,7 @@
     section: "{{ item.section | default('Definition') }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
-  notify: 'Restart fail2ban'
+  notify: 'HANDLER | Restart fail2ban'
   with_items: "{{ fail2ban_main_config_content }}"
 
 
@@ -23,4 +23,4 @@
     owner: 'root'
     group: 'root'
     mode: '0644'
-  notify: 'Restart fail2ban'
+  notify: 'HANDLER | Restart fail2ban'

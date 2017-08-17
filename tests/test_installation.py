@@ -1,57 +1,50 @@
 """
 Role tests
 """
+
 import ConfigParser
 import os
 import tempfile
 import pytest
+from testinfra.utils.ansible_runner import AnsibleRunner
 
-
-# To run all the tests on given docker images:
-pytestmark = pytest.mark.docker_images(
-    'infopen/ubuntu-trusty-ssh:0.1.0',
-    'infopen/ubuntu-xenial-ssh-py27:0.2.0'
-)
+testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
 
 
 # Test packages
-#------------------------------------------------------------------------------
-def test_packages(Package):
+def test_packages(host):
     """
     Test package install
     """
 
-    assert Package('fail2ban').is_installed
+    assert host.package('fail2ban').is_installed
 
 
 # Test configuration
-#------------------------------------------------------------------------------
-def test_config_files_properties(File):
+@pytest.mark.parametrize('path', [
+    '/etc/fail2ban/fail2ban.conf',
+    '/etc/fail2ban/jail.conf',
+    '/etc/fail2ban/jail.local',
+])
+def test_config_files_properties(host, path):
     """
     Test configuration file properties
     """
 
-    config_files = [
-        '/etc/fail2ban/fail2ban.conf',
-        '/etc/fail2ban/jail.conf',
-        '/etc/fail2ban/jail.local',
-    ]
-
-    for current_file in config_files:
-        config_file = File(current_file)
-        assert config_file.user == 'root'
-        assert config_file.group == 'root'
-        assert config_file.mode == 0o644
+    config_file = host.file(path)
+    assert config_file.user == 'root'
+    assert config_file.group == 'root'
+    assert config_file.mode == 0o644
 
 
-def test_main_config_file_content(File, SystemInfo):
+def test_main_config_file_content(host):
     """
     Test main configuration file content
     """
 
     expected_values = []
 
-    if SystemInfo.codename.lower() == 'xenial':
+    if host.system_info.codename.lower() == 'xenial':
         expected_values = [
             ('loglevel', 'INFO'),
             ('logtarget', '/var/log/fail2ban.log'),
@@ -71,7 +64,7 @@ def test_main_config_file_content(File, SystemInfo):
             ('syslog-facility', '1'),
         ]
 
-    cfg_file = File('/etc/fail2ban/fail2ban.conf')
+    cfg_file = host.file('/etc/fail2ban/fail2ban.conf')
 
     # Create a temporary file to check configuration content
     tmp_file = tempfile.NamedTemporaryFile(delete=False)
@@ -88,14 +81,14 @@ def test_main_config_file_content(File, SystemInfo):
     assert config.items('Definition') == expected_values
 
 
-def test_local_jails_config_file_content(File, SystemInfo):
+def test_local_jails_config_file_content(host):
     """
     Test local jails configuration file content
     """
 
     ssh_jail_section = 'ssh'
 
-    if SystemInfo.codename.lower() == 'xenial':
+    if host.system_info.codename.lower() == 'xenial':
         ssh_jail_section = 'sshd'
 
     expected_values = [
@@ -146,7 +139,7 @@ def test_local_jails_config_file_content(File, SystemInfo):
         ('logpath', '/var/log/auth.log'),
     ]
 
-    cfg_file = File('/etc/fail2ban/jail.local')
+    cfg_file = host.file('/etc/fail2ban/jail.local')
 
     # Create a temporary file to check configuration content
     tmp_file = tempfile.NamedTemporaryFile(delete=False)

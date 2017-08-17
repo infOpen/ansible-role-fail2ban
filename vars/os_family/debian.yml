@@ -6,7 +6,7 @@
 # Package variables
 #------------------------------------------------------------------------------
 _fail2ban_packages :
-  - 'fail2ban'
+  - name: 'fail2ban'
 
 
 # Service variables
