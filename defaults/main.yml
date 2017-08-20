@@ -29,6 +29,10 @@ fail2ban_main_config_file_path: '/etc/fail2ban/fail2ban.conf'
 # Jails configuration
 #------------------------------------------------------------------------------
 fail2ban_local_jails_config_file_path: '/etc/fail2ban/jail.local'
-
-# Jails services
 fail2ban_jails: "{{ _fail2ban_jails }}"
+
+
+# Actions configuration
+#------------------------------------------------------------------------------
+fail2ban_actions_folder_path: '/etc/fail2ban/action.d'
+fail2ban_actions: {}

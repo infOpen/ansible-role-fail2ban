@@ -171,9 +171,29 @@ _fail2ban_jails:
 
 ## How define ...
 
+### Actions
+
+Actions configurations are defined in `fail2ban_actions` dict. Keys are section
+name and values are the section content.
+
+All these actions configs are wrote to their own file.
+
+``` yaml
+_fail2ban_actions:
+  pf:
+    Definition:
+      actionstart: ''
+      actionstop: ''
+      actioncheck: ''
+      actionban: '/sbin/pfctl -t <tablename> -T add <ip>/32'
+      actionunban: '/sbin/pfctl -t <tablename> -T delete <ip>/32'
+    Init:
+      tablename: 'fail2ban'
+```
+
 ### Jails
 
-Jails configuration are defined in `fail2ban_jails` dict. Keys are section name
+Jails configurations are defined in `fail2ban_jails` dict. Keys are section name
 and values are the section content.
 
 All these jails configs are wrote to `jail.local` file.
@@ -188,6 +208,7 @@ _fail2ban_jails:
     maxretry: 3
     findtime: 600
 ```
+
 ## Dependencies
 
 None

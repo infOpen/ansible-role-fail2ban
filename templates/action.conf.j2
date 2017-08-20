@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% for section_name, section_items in item.value.iteritems() %}
+[{{ section_name }}]
+{% for key, value in section_items.iteritems() %}
+{{ key }} = {{ value }}
+{% endfor %}
+
+{% endfor %}

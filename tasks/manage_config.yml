@@ -16,6 +16,17 @@
   with_items: "{{ fail2ban_main_config_content }}"
 
 
+- name: 'CONFIG | Manage actions configurations files'
+  template:
+    src: "{{ role_path }}/templates/action.conf.j2"
+    dest: "{{ fail2ban_actions_folder_path }}/{{ item.key }}.conf"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: 'HANDLER | Restart fail2ban'
+  with_dict: "{{ fail2ban_actions }}"
+
+
 - name: 'CONFIG | Manage local jails configuration file'
   template:
     src: "{{ role_path }}/templates/jail.local.j2"

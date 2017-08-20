@@ -91,11 +91,11 @@ def test_local_jails_config_file_content(host):
 
     expected_values = [
         ('enabled', 'True'),
-        ('logpath', '/var/log/auth.log'),
         ('filter', 'sshd'),
+        ('findtime', '600'),
+        ('logpath', '/var/log/auth.log'),
         ('maxretry', '3'),
         ('port', 'ssh'),
-        ('findtime', '600'),
     ]
 
     cfg_file = host.file('/etc/fail2ban/jail.local')
@@ -112,4 +112,55 @@ def test_local_jails_config_file_content(host):
     os.unlink(tmp_file.name)
 
     assert ssh_jail_section in config.sections()
-    assert config.items(ssh_jail_section) == expected_values
+    assert sorted(config.items(ssh_jail_section)) == expected_values
+
+
+def test_fake_action_config_file_properties(host):
+    """
+    Test fake action configuration file properties
+    """
+
+    config_file = host.file('/etc/fail2ban/action.d/test_role.conf')
+
+    assert config_file.exists
+    assert config_file.is_file
+    assert config_file.user == 'root'
+    assert config_file.group == 'root'
+    assert config_file.mode == 0o644
+
+
+def test_fake_action_config_file_content(host):
+    """
+    Test fake action configuration file content
+    """
+
+    expected_values = {
+        'Definition': [
+            ('actionstart', 'foo'),
+            ('actionstop', 'bar'),
+        ],
+        'Init': [
+            ('foo', 'bar'),
+        ],
+    }
+
+    cfg_file = host.file('/etc/fail2ban/action.d/test_role.conf')
+
+    # Create a temporary file to check configuration content
+    tmp_file = tempfile.NamedTemporaryFile(delete=False)
+    tmp_file.write(cfg_file.content_string)
+    tmp_file.close()
+
+    config = ConfigParser.ConfigParser()
+    config.read(tmp_file.name)
+
+    # Remove temporary file
+    os.unlink(tmp_file.name)
+
+    # Check sections
+    assert 'Definition' in config.sections()
+    assert 'Init' in config.sections()
+
+    # Check items
+    assert sorted(config.items('Definition')) == expected_values['Definition']
+    assert config.items('Init') == expected_values['Init']
