@@ -51,6 +51,7 @@ $ MOLECULE_DRIVER=vagrant tox
 fail2ban_repository_update_cache: True
 fail2ban_repository_cache_valid_time: 3600
 
+
 # Package variables
 #------------------------------------------------------------------------------
 fail2ban_package_state: 'present'
@@ -64,18 +65,32 @@ fail2ban_service_name: "{{ _fail2ban_service_name }}"
 fail2ban_service_state: 'started'
 
 
-# Main configuration
+# Paths
 #------------------------------------------------------------------------------
-fail2ban_main_config_content: "{{ _fail2ban_main_config_content }}"
-fail2ban_main_config_file_path: '/etc/fail2ban/fail2ban.conf'
+_fail2ban_paths:
+  files:
+    action: {}
+    filter: {}
+    main_config:
+      path: '/etc/fail2ban/fail2ban.conf'
+    jail_local:
+      path: '/etc/fail2ban/jail.local'
+  folders:
+    action:
+      path: '/etc/fail2ban/action.d'
+    filter:
+      path: '/etc/fail2ban/filter.d'
+    main:
+      path: '/etc/fail2ban'
+fail2ban_paths: "{{ _fail2ban_paths }}"
 
 
-# Jails configuration
+# Configuration
 #------------------------------------------------------------------------------
-fail2ban_local_jails_config_file_path: '/etc/fail2ban/jail.local'
-
-# Jails
+fail2ban_actions: {}
+fail2ban_filters: {}
 fail2ban_jails: "{{ _fail2ban_jails }}"
+fail2ban_main_config_content: "{{ _fail2ban_main_config_content }}"
 ```
 
 ### Debian family role variables
