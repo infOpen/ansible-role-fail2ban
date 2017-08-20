@@ -30,19 +30,5 @@ fail2ban_main_config_file_path: '/etc/fail2ban/fail2ban.conf'
 #------------------------------------------------------------------------------
 fail2ban_local_jails_config_file_path: '/etc/fail2ban/jail.local'
 
-# Default configuration
-fail2ban_ignoreips:
- - '127.0.0.1/8'
-fail2ban_bantime: 600
-fail2ban_maxretry: 3
-fail2ban_findtime: 600
-fail2ban_backend: 'auto'
-fail2ban_destemail: 'root@localhost'
-fail2ban_banaction: 'iptables-multiport'
-fail2ban_mta: 'sendmail'
-fail2ban_protocol: 'tcp'
-fail2ban_chain: 'INPUT'
-fail2ban_action: 'action_'
-
 # Jails services
-fail2ban_services: "{{ _fail2ban_services }}"
+fail2ban_jails: "{{ _fail2ban_jails }}"

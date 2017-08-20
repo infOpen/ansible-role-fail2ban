@@ -46,6 +46,11 @@ $ MOLECULE_DRIVER=vagrant tox
 ### Default role variables
 
 ``` yaml
+# Repositories variables
+#------------------------------------------------------------------------------
+fail2ban_repository_update_cache: True
+fail2ban_repository_cache_valid_time: 3600
+
 # Package variables
 #------------------------------------------------------------------------------
 fail2ban_package_state: 'present'
@@ -69,22 +74,8 @@ fail2ban_main_config_file_path: '/etc/fail2ban/fail2ban.conf'
 #------------------------------------------------------------------------------
 fail2ban_local_jails_config_file_path: '/etc/fail2ban/jail.local'
 
-# Default configuration
-fail2ban_ignoreips:
- - '127.0.0.1/8'
-fail2ban_bantime: 600
-fail2ban_maxretry: 3
-fail2ban_findtime: 600
-fail2ban_backend: 'auto'
-fail2ban_destemail: 'root@localhost'
-fail2ban_banaction: 'iptables-multiport'
-fail2ban_mta: 'sendmail'
-fail2ban_protocol: 'tcp'
-fail2ban_chain: 'INPUT'
-fail2ban_action: 'action_'
-
-# Jails services
-fail2ban_services: "{{ _fail2ban_services }}"
+# Jails
+fail2ban_jails: "{{ _fail2ban_jails }}"
 ```
 
 ### Debian family role variables
@@ -93,7 +84,7 @@ fail2ban_services: "{{ _fail2ban_services }}"
 # Package variables
 #------------------------------------------------------------------------------
 _fail2ban_packages :
-  - 'fail2ban'
+  - name: 'fail2ban'
 
 
 # Service variables
@@ -120,8 +111,8 @@ _fail2ban_main_config_content:
 
 # Jails configuration
 #------------------------------------------------------------------------------
-_fail2ban_services:
-  - name: 'ssh'
+_fail2ban_jails:
+  ssh:
     enabled: true
     port: 'ssh'
     filter: 'sshd'
@@ -130,7 +121,21 @@ _fail2ban_services:
     findtime: 600
 ```
 
-### Ubuntu Xenial role variables
+### Debian Jessie specific role variables
+
+``` yaml
+_fail2ban_main_config_content:
+  - option: 'loglevel'
+    value: 3
+  - option: 'logtarget'
+    value: '/var/log/fail2ban.log'
+  - option: 'socket'
+    value: '/var/run/fail2ban/fail2ban.sock'
+  - option: 'pidfile'
+    value: '/var/run/fail2ban/fail2ban.pid'
+```
+
+### Ubuntu Xenial specific role variables
 
 ``` yaml
 # Main configuration
@@ -154,8 +159,8 @@ _fail2ban_main_config_content:
 
 # Jails configuration
 #------------------------------------------------------------------------------
-_fail2ban_services:
-  - name: 'sshd'
+_fail2ban_jails:
+  sshd:
     enabled: true
     port: 'ssh'
     filter: 'sshd'
@@ -164,6 +169,25 @@ _fail2ban_services:
     findtime: 600
 ```
 
+## How define ...
+
+### Jails
+
+Jails configuration are defined in `fail2ban_jails` dict. Keys are section name
+and values are the section content.
+
+All these jails configs are wrote to `jail.local` file.
+
+``` yaml
+_fail2ban_jails:
+  ssh:
+    enabled: true
+    port: 'ssh'
+    filter: 'sshd'
+    logpath: '/var/log/auth.log'
+    maxretry: 3
+    findtime: 600
+```
 ## Dependencies
 
 None

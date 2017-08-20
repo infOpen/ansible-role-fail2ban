@@ -60,8 +60,6 @@ def test_main_config_file_content(host):
             ('logtarget', '/var/log/fail2ban.log'),
             ('socket', '/var/run/fail2ban/fail2ban.sock'),
             ('pidfile', '/var/run/fail2ban/fail2ban.pid'),
-            ('syslog-target', '/var/log/fail2ban.log'),
-            ('syslog-facility', '1'),
         ]
 
     cfg_file = host.file('/etc/fail2ban/fail2ban.conf')
@@ -92,51 +90,12 @@ def test_local_jails_config_file_content(host):
         ssh_jail_section = 'sshd'
 
     expected_values = [
-        ('ignoreip', '127.0.0.1/8'),
-        ('bantime', '600'),
-        ('maxretry', '3'),
-        ('findtime', '600'),
-        ('backend', 'auto'),
-        ('destemail', 'root@localhost'),
-        ('banaction', 'iptables-multiport'),
-        ('mta', 'sendmail'),
-        ('protocol', 'tcp'),
-        ('chain', 'INPUT'),
-        ('action_', (
-            'iptables-multiport[name={0}, '
-            'port="ssh", '
-            'protocol="tcp", '
-            'chain="INPUT"]').format(ssh_jail_section)),
-        ('action_mw', (
-            'iptables-multiport[name={0}, '
-            'port="ssh", '
-            'protocol="tcp", '
-            'chain="INPUT"]\nsendmail-whois['
-            'name={0}, '
-            'dest="root@localhost", '
-            'protocol="tcp", '
-            'chain="INPUT"]').format(ssh_jail_section)),
-        ('action_mwl', (
-            'iptables-multiport['
-            'name={0}, '
-            'port="ssh", '
-            'protocol="tcp", '
-            'chain="INPUT"]\n'
-            'sendmail-whois-lines['
-            'name={0}, '
-            'dest="root@localhost", '
-            'logpath=/var/log/auth.log, '
-            'chain="INPUT"]').format(ssh_jail_section)),
-        ('action', (
-            'iptables-multiport['
-            'name={0}, '
-            'port="ssh", '
-            'protocol="tcp", '
-            'chain="INPUT"]').format(ssh_jail_section)),
-        ('enabled', 'true'),
-        ('port', 'ssh'),
-        ('filter', 'sshd'),
+        ('enabled', 'True'),
         ('logpath', '/var/log/auth.log'),
+        ('filter', 'sshd'),
+        ('maxretry', '3'),
+        ('port', 'ssh'),
+        ('findtime', '600'),
     ]
 
     cfg_file = host.file('/etc/fail2ban/jail.local')
