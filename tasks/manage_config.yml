@@ -3,24 +3,70 @@
 # Configuration tasks file for fail2ban
 #==============================================================================
 
+- name: 'CONFIG | PATHS | Ensure main configuration folder exists'
+  file:
+    dest: "{{ fail2ban_paths.folders.main.path }}"
+    owner: "{{ fail2ban_paths.folders.main.owner | default('root') }}"
+    group: "{{ fail2ban_paths.folders.main.group | default('root') }}"
+    mode: "{{ fail2ban_paths.folders.main.mode | default('0755') }}"
+
+
+- name: 'CONFIG | Ensure actions folder exists'
+  file:
+    dest: "{{ fail2ban_paths.folders.action.path }}"
+    owner: "{{ fail2ban_paths.folders.action.owner | default('root') }}"
+    group: "{{ fail2ban_paths.folders.action.group | default('root') }}"
+    mode: "{{ fail2ban_paths.folders.action.mode | default('0755') }}"
+
+
+- name: 'CONFIG | Ensure filters folder exists'
+  file:
+    dest: "{{ fail2ban_paths.folders.filter.path }}"
+    owner: "{{ fail2ban_paths.folders.filter.owner | default('root') }}"
+    group: "{{ fail2ban_paths.folders.filter.group | default('root') }}"
+    mode: "{{ fail2ban_paths.folders.filter.mode | default('0755') }}"
+
+
 - name: 'CONFIG | Manage main configuration file'
   ini_file:
-    dest: "{{ fail2ban_main_config_file_path }}"
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
+    dest: "{{ fail2ban_paths.files.main_config.path }}"
+    owner: "{{ fail2ban_paths.files.main_config.owner | default('root') }}"
+    group: "{{ fail2ban_paths.files.main_config.group | default('root') }}"
+    mode: "{{ fail2ban_paths.files.main_config.mode | default('0644') }}"
     section: "{{ item.section | default('Definition') }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
-  notify: 'Restart fail2ban'
+  notify: 'HANDLER | Restart fail2ban'
   with_items: "{{ fail2ban_main_config_content }}"
+
+
+- name: 'CONFIG | Manage actions configurations files'
+  template:
+    src: "{{ role_path }}/templates/action.conf.j2"
+    dest: "{{ fail2ban_paths.folders.action.path }}/{{ item.key }}.conf"
+    owner: "{{ fail2ban_paths.files.action.owner | default('root') }}"
+    group: "{{ fail2ban_paths.files.action.group | default('root') }}"
+    mode: "{{ fail2ban_paths.files.action.mode | default('0644') }}"
+  notify: 'HANDLER | Restart fail2ban'
+  with_dict: "{{ fail2ban_actions }}"
+
+
+- name: 'CONFIG | Manage filters configurations files'
+  template:
+    src: "{{ role_path }}/templates/filter.conf.j2"
+    dest: "{{ fail2ban_paths.folders.filter.path }}/{{ item.key }}.conf"
+    owner: "{{ fail2ban_paths.files.filter.owner | default('root') }}"
+    group: "{{ fail2ban_paths.files.filter.group | default('root') }}"
+    mode: "{{ fail2ban_paths.files.filter.mode | default('0644') }}"
+  notify: 'HANDLER | Restart fail2ban'
+  with_dict: "{{ fail2ban_filters }}"
 
 
 - name: 'CONFIG | Manage local jails configuration file'
   template:
     src: "{{ role_path }}/templates/jail.local.j2"
-    dest: "{{ fail2ban_local_jails_config_file_path }}"
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
-  notify: 'Restart fail2ban'
+    dest: "{{ fail2ban_paths.files.jail_local.path }}"
+    owner: "{{ fail2ban_paths.files.jail_local.owner | default('root') }}"
+    group: "{{ fail2ban_paths.files.jail_local.group | default('root') }}"
+    mode: "{{ fail2ban_paths.files.jail_local.mode | default('0644') }}"
+  notify: 'HANDLER | Restart fail2ban'

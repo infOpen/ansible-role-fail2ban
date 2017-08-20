@@ -1,6 +1,6 @@
 ---
 
-# Ubuntu Trusty specific variables
+# Debian Jessie specific configuration
 
 _fail2ban_main_config_content:
   - option: 'loglevel'

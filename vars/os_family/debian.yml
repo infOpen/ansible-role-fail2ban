@@ -6,7 +6,7 @@
 # Package variables
 #------------------------------------------------------------------------------
 _fail2ban_packages :
-  - 'fail2ban'
+  - name: 'fail2ban'
 
 
 # Service variables
@@ -33,8 +33,8 @@ _fail2ban_main_config_content:
 
 # Jails configuration
 #------------------------------------------------------------------------------
-_fail2ban_services:
-  - name: 'ssh'
+_fail2ban_jails:
+  ssh:
     enabled: true
     port: 'ssh'
     filter: 'sshd'

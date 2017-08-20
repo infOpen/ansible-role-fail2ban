@@ -24,8 +24,8 @@ _fail2ban_main_config_content:
 
 # Jails configuration
 #------------------------------------------------------------------------------
-_fail2ban_services:
-  - name: 'sshd'
+_fail2ban_jails:
+  sshd:
     enabled: true
     port: 'ssh'
     filter: 'sshd'
