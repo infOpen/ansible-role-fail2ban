@@ -14,6 +14,13 @@ ansible:
             actionstop: 'bar'
           Init:
             foo: 'bar'
+      fail2ban_filters:
+        test_role_2:
+          INCLUDES:
+            before: 'common.conf'
+          Definition:
+            failregex: '^foo.*$'
+            ignoreregex: '^bar.*$'
 dependency:
   name: 'galaxy'
 driver:

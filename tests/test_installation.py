@@ -164,3 +164,54 @@ def test_fake_action_config_file_content(host):
     # Check items
     assert sorted(config.items('Definition')) == expected_values['Definition']
     assert config.items('Init') == expected_values['Init']
+
+
+def test_fake_filter_config_file_properties(host):
+    """
+    Test fake filter configuration file properties
+    """
+
+    config_file = host.file('/etc/fail2ban/filter.d/test_role_2.conf')
+
+    assert config_file.exists
+    assert config_file.is_file
+    assert config_file.user == 'root'
+    assert config_file.group == 'root'
+    assert config_file.mode == 0o644
+
+
+def test_fake_filter_config_file_content(host):
+    """
+    Test fake action configuration file content
+    """
+
+    expected_values = {
+        'INCLUDES': [
+            ('before', 'common.conf'),
+        ],
+        'Definition': [
+            ('failregex', '^foo.*$'),
+            ('ignoreregex', '^bar.*$'),
+        ],
+    }
+
+    cfg_file = host.file('/etc/fail2ban/filter.d/test_role_2.conf')
+
+    # Create a temporary file to check configuration content
+    tmp_file = tempfile.NamedTemporaryFile(delete=False)
+    tmp_file.write(cfg_file.content_string)
+    tmp_file.close()
+
+    config = ConfigParser.ConfigParser()
+    config.read(tmp_file.name)
+
+    # Remove temporary file
+    os.unlink(tmp_file.name)
+
+    # Check sections
+    assert 'INCLUDES' in config.sections()
+    assert 'Definition' in config.sections()
+
+    # Check items
+    assert config.items('INCLUDES') == expected_values['INCLUDES']
+    assert sorted(config.items('Definition')) == expected_values['Definition']

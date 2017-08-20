@@ -191,6 +191,27 @@ _fail2ban_actions:
       tablename: 'fail2ban'
 ```
 
+### Filters
+
+Filters configurations are defined in `fail2ban_filters` dict. Keys are section
+name and values are the section content.
+
+All these filters configs are wrote to their own file.
+
+``` yaml
+_fail2ban_filters:
+  vsftpd:
+    INCLUDES:
+      before: 'common.conf'
+    Definition:
+      __pam_re: '\(?%(__pam_auth)s(?:\(\S+\))?\)?:?'
+      _daemon: 'vsftpd'
+      failregex = |
+        ^%(__prefix_line)s%(__pam_re)s\s+authentication failure; logname=\S* uid=\S* euid=\S* tty=(ftp)? ruser=\S* rhost=<HOST>(?:\s+user=.*)?\s*$
+        ^ \[pid \d+\] \[.+\] FAIL LOGIN: Client "<HOST>"\s*$
+      ignoreregex: ''
+```
+
 ### Jails
 
 Jails configurations are defined in `fail2ban_jails` dict. Keys are section name
