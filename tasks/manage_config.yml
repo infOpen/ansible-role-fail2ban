@@ -1,7 +1,7 @@
 ---
 
 # Configuration tasks file for fail2ban
-#==============================================================================
+# =============================================================================
 
 - name: 'CONFIG | PATHS | Ensure main configuration folder exists'
   file:

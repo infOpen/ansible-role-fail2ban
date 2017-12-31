@@ -1,0 +1,58 @@
+---
+
+dependency:
+  name: 'galaxy'
+driver:
+  name: 'docker'
+lint:
+  name: 'yamllint'
+platforms:
+  - name: "fail2ban-docker-jessie"
+    image: 'minimum2scp/systemd-jessie:latest'
+    command: '/sbin/init'
+    cap_add:
+      - 'SYS_PTRACE'
+    privileged: True
+  - name: "fail2ban-docker-xenial"
+    image: 'solita/ubuntu-systemd:16.04'
+    command: '/sbin/init'
+    cap_add:
+      - 'SYS_PTRACE'
+    privileged: True
+  - name: "fail2ban-docker-trusty"
+    image: 'ubuntu:trusty'
+    cap_add:
+      - 'SYS_PTRACE'
+    privileged: True
+provisioner:
+  name: 'ansible'
+  lint:
+    name: 'ansible-lint'
+  inventory:
+    group_vars:
+      all:
+        fail2ban_actions:
+          test_role:
+            Definition:
+              actionstart: 'foo'
+              actionstop: 'bar'
+            Init:
+              foo: 'bar'
+        fail2ban_filters:
+          test_role_2:
+            INCLUDES:
+              before: 'common.conf'
+            Definition:
+              failregex: '^foo.*$$'
+              ignoreregex: '^bar.*$$'
+    host_vars: {}
+scenario:
+  name: 'default'
+verifier:
+  name: 'testinfra'
+  additional_files_or_dirs:
+    - '../../tests'
+  lint:
+    name: 'flake8'
+  options:
+    sudo: True
