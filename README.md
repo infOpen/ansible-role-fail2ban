@@ -10,7 +10,7 @@ Install fail2ban package.
 
 ## Requirements
 
-This role requires Ansible 2.2 or higher,
+This role requires Ansible 2.4 or higher,
 and platform requirements are listed in the metadata file.
 
 ## Testing
@@ -26,9 +26,10 @@ Currently, tests are done on:
 - Ubuntu Xenial
 
 and use:
-- Ansible 2.2.x
-- Ansible 2.3.x
 - Ansible 2.4.x
+- Ansible 2.5.x
+- Ansible 2.6.x
+- Ansible 2.7.x
 
 ### Running tests
 
