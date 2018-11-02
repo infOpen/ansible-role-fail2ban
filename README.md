@@ -22,8 +22,9 @@ See molecule documentation to use other backend.
 
 Currently, tests are done on:
 - Debian Jessie
-- Ubuntu Trusty
+- Debian Stretch
 - Ubuntu Xenial
+- Ubuntu Bionic
 
 and use:
 - Ansible 2.4.x
@@ -38,6 +39,10 @@ and use:
 ```
 $ tox
 ```
+
+You can also configure molecule options and molecule command using environment variables:
+* `MOLECULE_OPTIONS` Default: "--debug"
+* `MOLECULE_COMMAND` Default: "test
 
 ## Role Variables
 
