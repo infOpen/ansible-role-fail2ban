@@ -1,0 +1,9 @@
+---
+
+- name: 'INSTALL | YUM | Install fail2ban packages'
+  yum:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ fail2ban_packages }}"
+  notify:
+    - 'HANDLER | Restart fail2ban'

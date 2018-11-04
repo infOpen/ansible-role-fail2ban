@@ -13,6 +13,8 @@ Install fail2ban package.
 This role requires Ansible 2.4 or higher,
 and platform requirements are listed in the metadata file.
 
+> **Note**: On CentOS 7, you must have EPEL installed
+
 ## Testing
 
 This role use [Molecule](https://github.com/metacloud/molecule/) to run tests.
@@ -21,6 +23,7 @@ Local and Travis tests run tests on Docker by default.
 See molecule documentation to use other backend.
 
 Currently, tests are done on:
+- CentOS 7
 - Debian Jessie
 - Debian Stretch
 - Ubuntu Xenial

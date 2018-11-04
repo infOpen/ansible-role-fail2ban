@@ -15,6 +15,11 @@
       raw: 'apt-get install -qq python2.7'
       changed_when: False
 
+- name: 'Converge | Prerequisites tasks'
+  hosts: 'fail2ban-docker-centos7'
+  roles:
+    - role: "geerlingguy.repo-epel"
+
 
 - name: 'Converge | Main tasks'
   hosts: 'all'

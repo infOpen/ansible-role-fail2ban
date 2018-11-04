@@ -10,7 +10,7 @@
     - 'role::fail2ban::install'
 
 
-- name: 'INSTALL | Manage install on Debian family OS'
+- name: 'INSTALL | Manage install on family OS'
   become: True
   include: "{{ role_path }}/tasks/install_{{ ansible_os_family | lower }}.yml"
   tags:
