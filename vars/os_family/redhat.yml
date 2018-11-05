@@ -1,0 +1,43 @@
+---
+
+# RedHat OS family specific vars
+# =============================================================================
+
+# Package variables
+# -----------------------------------------------------------------------------
+_fail2ban_packages:
+  - name: 'fail2ban'
+
+
+# Service variables
+# -----------------------------------------------------------------------------
+_fail2ban_service_name: 'fail2ban'
+
+
+# Main configuration
+# -----------------------------------------------------------------------------
+_fail2ban_main_config_content:
+  - option: 'loglevel'
+    value: 3
+  - option: 'logtarget'
+    value: '/var/log/fail2ban.log'
+  - option: 'syslog-target'
+    value: '/var/log/fail2ban.log'
+  - option: 'syslog-facility'
+    value: 1
+  - option: 'socket'
+    value: '/var/run/fail2ban/fail2ban.sock'
+  - option: 'pidfile'
+    value: '/var/run/fail2ban/fail2ban.pid'
+
+
+# Jails configuration
+# -----------------------------------------------------------------------------
+_fail2ban_jails:
+  ssh:
+    enabled: true
+    port: 'ssh'
+    filter: 'sshd'
+    logpath: '/var/log/auth.log'
+    maxretry: 3
+    findtime: 600

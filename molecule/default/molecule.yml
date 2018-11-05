@@ -7,8 +7,20 @@ driver:
 lint:
   name: 'yamllint'
 platforms:
+  - name: "fail2ban-docker-centos7"
+    image: 'centos/systemd:latest'
+    command: '/sbin/init'
+    cap_add:
+      - 'SYS_PTRACE'
+    privileged: True
   - name: "fail2ban-docker-jessie"
     image: 'minimum2scp/systemd-jessie:latest'
+    command: '/sbin/init'
+    cap_add:
+      - 'SYS_PTRACE'
+    privileged: True
+  - name: "fail2ban-docker-stretch"
+    image: 'minimum2scp/systemd-stretch:latest'
     command: '/sbin/init'
     cap_add:
       - 'SYS_PTRACE'
@@ -19,8 +31,9 @@ platforms:
     cap_add:
       - 'SYS_PTRACE'
     privileged: True
-  - name: "fail2ban-docker-trusty"
-    image: 'ubuntu:trusty'
+  - name: "fail2ban-docker-bionic"
+    image: 'solita/ubuntu-systemd:18.04'
+    command: '/sbin/init'
     cap_add:
       - 'SYS_PTRACE'
     privileged: True
@@ -56,3 +69,4 @@ verifier:
     name: 'flake8'
   options:
     sudo: True
+    vv: True
