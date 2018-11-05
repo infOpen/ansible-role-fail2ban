@@ -12,7 +12,6 @@ language: 'python'
 
 env:
   matrix:
-    - TOXENV='py27-ansible24'
     - TOXENV='py27-ansible25'
     - TOXENV='py27-ansible26'
     - TOXENV='py27-ansible27'

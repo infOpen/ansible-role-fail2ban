@@ -10,7 +10,7 @@ Install fail2ban package.
 
 ## Requirements
 
-This role requires Ansible 2.4 or higher,
+This role requires Ansible 2.5 or higher,
 and platform requirements are listed in the metadata file.
 
 > **Note**: On CentOS 7, you must have EPEL installed
@@ -30,7 +30,6 @@ Currently, tests are done on:
 - Ubuntu Bionic
 
 and use:
-- Ansible 2.4.x
 - Ansible 2.5.x
 - Ansible 2.6.x
 - Ansible 2.7.x
