@@ -6,9 +6,11 @@ import ConfigParser
 import os
 import tempfile
 import pytest
+
 from testinfra.utils.ansible_runner import AnsibleRunner
 
-testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
+testinfra_hosts = AnsibleRunner(
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
 # Test packages
@@ -43,8 +45,10 @@ def test_main_config_file_content(host):
     """
 
     expected_values = []
+    distribution = host.system_info.distribution.lower()
+    release = host.system_info.release
 
-    if host.system_info.codename.lower() == 'xenial':
+    if distribution == 'ubuntu' and release == '16.04':
         expected_values = [
             ('loglevel', 'INFO'),
             ('logtarget', '/var/log/fail2ban.log'),
@@ -53,6 +57,42 @@ def test_main_config_file_content(host):
             ('pidfile', '/var/run/fail2ban/fail2ban.pid'),
             ('dbfile', '/var/lib/fail2ban/fail2ban.sqlite3'),
             ('dbpurgeage', '86400'),
+        ]
+    elif distribution == 'centos' and release == '7':
+        expected_values = [
+            ('loglevel', '3'),
+            ('logtarget', '/var/log/fail2ban.log'),
+            ('syslogsocket', 'auto'),
+            ('socket', '/var/run/fail2ban/fail2ban.sock'),
+            ('pidfile', '/var/run/fail2ban/fail2ban.pid'),
+            ('dbfile', '/var/lib/fail2ban/fail2ban.sqlite3'),
+            ('dbpurgeage', '86400'),
+            ('syslog-target', '/var/log/fail2ban.log'),
+            ('syslog-facility', '1'),
+        ]
+    elif distribution == 'ubuntu' and release == '18.04':
+        expected_values = [
+            ('loglevel', '3'),
+            ('logtarget', '/var/log/fail2ban.log'),
+            ('syslogsocket', 'auto'),
+            ('socket', '/var/run/fail2ban/fail2ban.sock'),
+            ('pidfile', '/var/run/fail2ban/fail2ban.pid'),
+            ('dbfile', '/var/lib/fail2ban/fail2ban.sqlite3'),
+            ('dbpurgeage', '1d'),
+            ('syslog-target', '/var/log/fail2ban.log'),
+            ('syslog-facility', '1'),
+        ]
+    elif distribution == 'debian' and release == '9':
+        expected_values = [
+            ('loglevel', '3'),
+            ('logtarget', '/var/log/fail2ban.log'),
+            ('syslogsocket', 'auto'),
+            ('socket', '/var/run/fail2ban/fail2ban.sock'),
+            ('pidfile', '/var/run/fail2ban/fail2ban.pid'),
+            ('dbfile', '/var/lib/fail2ban/fail2ban.sqlite3'),
+            ('dbpurgeage', '86400'),
+            ('syslog-target', '/var/log/fail2ban.log'),
+            ('syslog-facility', '1'),
         ]
     else:
         expected_values = [
@@ -85,8 +125,10 @@ def test_local_jails_config_file_content(host):
     """
 
     ssh_jail_section = 'ssh'
+    distribution = host.system_info.distribution.lower()
+    release = host.system_info.release
 
-    if host.system_info.codename.lower() == 'xenial':
+    if distribution == 'ubuntu' and release == '16.04':
         ssh_jail_section = 'sshd'
 
     expected_values = [

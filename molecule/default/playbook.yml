@@ -2,8 +2,8 @@
 
 # Role tests
 
-- hosts: 'fail2ban-vagrant-xenial64:fail2ban-docker-xenial'
-  name: 'Install tests prerequisites'
+- name: 'Converge | Prerequisites tasks'
+  hosts: 'fail2ban-docker-xenial'
   gather_facts: False
   tasks:
     - name: 'PREREQUISITES | APT | Do an apt-get update'
@@ -15,8 +15,14 @@
       raw: 'apt-get install -qq python2.7'
       changed_when: False
 
+- name: 'Converge | Prerequisites tasks'
+  hosts: 'fail2ban-docker-centos7'
+  roles:
+    - role: "geerlingguy.repo-epel"
 
-- hosts: 'all'
+
+- name: 'Converge | Main tasks'
+  hosts: 'all'
   pre_tasks:
     - name: 'PREREQUISITES | FILES | Touch /var/log/auth.log'
       become: True
@@ -25,6 +31,4 @@
         state: 'touch'
       changed_when: False
   roles:
-    - role: "{{ role_name }}"
-  vars:
-    role_name: "{{ playbook_dir | basename }}"
+    - role: "ansible-role-fail2ban"

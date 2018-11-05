@@ -3,26 +3,26 @@
 # Defaults vars file for fail2ban role
 
 # Repositories variables
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 fail2ban_repository_update_cache: True
 fail2ban_repository_cache_valid_time: 3600
 
 
 # Package variables
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 fail2ban_package_state: 'present'
 fail2ban_packages: "{{ _fail2ban_packages }}"
 
 
 # Service variables
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 fail2ban_service_enabled: True
 fail2ban_service_name: "{{ _fail2ban_service_name }}"
 fail2ban_service_state: 'started'
 
 
 # Paths
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 _fail2ban_paths:
   files:
     action: {}
@@ -42,7 +42,7 @@ fail2ban_paths: "{{ _fail2ban_paths }}"
 
 
 # Configuration
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 fail2ban_actions: {}
 fail2ban_filters: {}
 fail2ban_jails: "{{ _fail2ban_jails }}"
