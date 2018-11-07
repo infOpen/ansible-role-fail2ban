@@ -9,6 +9,7 @@
     owner: "{{ fail2ban_paths.folders.main.owner | default('root') }}"
     group: "{{ fail2ban_paths.folders.main.group | default('root') }}"
     mode: "{{ fail2ban_paths.folders.main.mode | default('0755') }}"
+    state: 'directory'
 
 
 - name: 'CONFIG | Ensure actions folder exists'
@@ -17,6 +18,7 @@
     owner: "{{ fail2ban_paths.folders.action.owner | default('root') }}"
     group: "{{ fail2ban_paths.folders.action.group | default('root') }}"
     mode: "{{ fail2ban_paths.folders.action.mode | default('0755') }}"
+    state: 'directory'
 
 
 - name: 'CONFIG | Ensure filters folder exists'
@@ -25,6 +27,7 @@
     owner: "{{ fail2ban_paths.folders.filter.owner | default('root') }}"
     group: "{{ fail2ban_paths.folders.filter.group | default('root') }}"
     mode: "{{ fail2ban_paths.folders.filter.mode | default('0755') }}"
+    state: 'directory'
 
 
 - name: 'CONFIG | Manage main configuration file'
