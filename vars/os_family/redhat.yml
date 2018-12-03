@@ -38,6 +38,6 @@ _fail2ban_jails:
     enabled: true
     port: 'ssh'
     filter: 'sshd'
-    logpath: '/var/log/auth.log'
+    logpath: '/var/log/secure'
     maxretry: 3
     findtime: 600
