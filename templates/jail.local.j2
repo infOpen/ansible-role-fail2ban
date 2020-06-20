@@ -1,9 +1,8 @@
 # {{ ansible_managed }}
 
-{% for section_name, section_items in fail2ban_jails.iteritems() %}
+{% for section_name, section_items in fail2ban_jails.items() %}
 [{{ section_name }}]
-{% for key, value in section_items.iteritems() %}
+{% for key, value in section_items.items() %}
 {{ key }} = {{ value }}
 {% endfor %}
-
 {% endfor %}
