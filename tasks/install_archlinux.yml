@@ -1,0 +1,9 @@
+---
+
+- name: 'INSTALL | PACMAN | Install fail2ban packages'
+  pacman:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ fail2ban_packages }}"
+  notify:
+    - 'HANDLER | Restart fail2ban'
