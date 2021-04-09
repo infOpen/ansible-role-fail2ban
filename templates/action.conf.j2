@@ -2,9 +2,9 @@
 
 # Action configuration for {{ item.key }}
 
-{% for section_name, section_items in item.value.iteritems() %}
+{% for section_name, section_items in item.value.items() %}
 [{{ section_name }}]
-{% for key, value in section_items.iteritems() %}
+{% for key, value in section_items.items() %}
 {{ key }} = {{ value }}
 {% endfor %}
 
